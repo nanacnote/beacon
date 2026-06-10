@@ -1,0 +1,76 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "beacon"
+dynamic = ["version"]
+description = "Transport-agnostic, event-driven interface layer for LLM systems"
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Beacon Contributors"}]
+keywords = ["llm", "event-driven", "asyncio", "matrix", "adapters", "reactions"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+matrix = [
+    "mautrix>=0.20.0",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0",
+    "black>=23.0",
+    "ruff>=0.1.0",
+    "build>=1.2.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/nanacnote/beacon"
+Repository = "https://github.com/nanacnote/beacon"
+"Bug Tracker" = "https://github.com/nanacnote/beacon/issues"
+
+[tool.hatch.version]
+source = "vcs"
+tag-pattern = "v(?P<version>.+)"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "beacon/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["beacon"]
+
+[tool.hatch.envs.default]
+path = ".venv"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+addopts = "-v --strict-markers"
+
+[tool.black]
+line-length = 100
+target-version = ["py311"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I"]

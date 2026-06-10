@@ -1,0 +1,33 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build-and-upload:
+    name: Build and attach to release
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install build frontend
+        run: pip install build
+
+      - name: Build wheel and sdist
+        run: python -m build
+
+      - name: Attach dist assets to the GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
